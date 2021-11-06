@@ -5,12 +5,19 @@ describe "test de vendedores parte 1" {
 	
 	const c1 = new Certificacion(puntos = 15)
 	const c2 = new Certificacion(puntos = 8, esSobreProductos = false)
-	const buenosAires = new Provincia(poblacion = 16000000)
+	const buenosAires = new Provincia(poblacion = 5000000)
+	const cordoba = new Provincia(poblacion = 3000000) 
+	const santaFe = new Provincia(poblacion = 8000000)
 	const laPlata = new Ciudad(provincia = buenosAires)
 	const quilmes = new Ciudad(provincia = buenosAires)
+	const villaCarlosPaz = new Ciudad(provincia = cordoba)
+	const rosario = new Ciudad(provincia = santaFe)
 	var juan = new VendedorFijo(ciudadDondeVive = laPlata, certificaciones = [c2])
-	var tito = new Viajante(ciudadDondeVive = laPlata, ciudadesHabilitadas = [quilmes], certificaciones = [c1])
-	var pedro = new Viajante(ciudadDondeVive = quilmes, ciudadesHabilitadas = [quilmes, laPlata], certificaciones = [c1, c1, c2])
+	var tito = new Viajante(ciudadDondeVive = rosario, provinciasHabilitadas = [santaFe], certificaciones = [c1])
+	var pedro = new Viajante(ciudadDondeVive = quilmes, provinciasHabilitadas = [buenosAires, santaFe], certificaciones = [c1, c1, c2])
+	const comercio1 = new ComercioCorresponsal(ciudadDondeVive = villaCarlosPaz, sucursalesEn = [quilmes, villaCarlosPaz, rosario], certificaciones = [c1])
+	const comercio2 = new ComercioCorresponsal(ciudadDondeVive = rosario, sucursalesEn = [rosario, villaCarlosPaz], certificaciones = [c1])
+	const comercio3 = new ComercioCorresponsal(ciudadDondeVive = rosario, sucursalesEn = [rosario, quilmes, laPlata], certificaciones = [c1])
 		
 	
 	test "Juan puede trabajar en La PLata" {
@@ -19,6 +26,10 @@ describe "test de vendedores parte 1" {
 
 	test "Tito no es versatil" {
 		assert.notThat(tito.esVersatil())
+	}
+	
+	test "Tito no es firme" {
+		assert.notThat(tito.esFirme())
 	}
 
 	test "Tito no puede trabajar en La PLata" {
@@ -36,5 +47,24 @@ describe "test de vendedores parte 1" {
 	test "Pedro es firme" {
 		assert.that(pedro.esFirme())
 	}
-}
+	
+	test "Pedro es influyente" {
+		assert.that(pedro.esInfluyente())
+	}
+	
+	test "tito no es influyente" {
+		assert.notThat(tito.esInfluyente())
+	}
+	
+	test "comercio1 es influyente" {
+		assert.that(comercio1.esInfluyente())
+	}
+	
+	test "comercio2 no es influyente"{
+		assert.notThat(comercio2.esInfluyente())
+	}
+	
+	test "comercio3 no es influyente"{
+		assert.notThat(comercio3.esInfluyente())
+	}
 }
