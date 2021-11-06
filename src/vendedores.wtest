@@ -1,0 +1,40 @@
+import vendedores.*
+import ciudadesYProvincias.*
+
+describe "test de vendedores parte 1" {
+	
+	const c1 = new Certificacion(puntos = 15)
+	const c2 = new Certificacion(puntos = 8, esSobreProductos = false)
+	const buenosAires = new Provincia(poblacion = 16000000)
+	const laPlata = new Ciudad(provincia = buenosAires)
+	const quilmes = new Ciudad(provincia = buenosAires)
+	var juan = new VendedorFijo(ciudadDondeVive = laPlata, certificaciones = [c2])
+	var tito = new Viajante(ciudadDondeVive = laPlata, ciudadesHabilitadas = [quilmes], certificaciones = [c1])
+	var pedro = new Viajante(ciudadDondeVive = quilmes, ciudadesHabilitadas = [quilmes, laPlata], certificaciones = [c1, c1, c2])
+		
+	
+	test "Juan puede trabajar en La PLata" {
+		assert.that(juan.puedeTrabajarEn(laPlata))
+	}
+
+	test "Tito no es versatil" {
+		assert.notThat(tito.esVersatil())
+	}
+
+	test "Tito no puede trabajar en La PLata" {
+		assert.that(juan.puedeTrabajarEn(laPlata))
+	}
+
+	test "Pedro es versatil" {
+		assert.that(pedro.esVersatil())
+	}
+
+	test "Pedro puede trabajar en La Plata" {
+		assert.that(pedro.puedeTrabajarEn(laPlata))
+	}
+
+	test "Pedro es firme" {
+		assert.that(pedro.esFirme())
+	}
+}
+}

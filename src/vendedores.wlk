@@ -1,8 +1,9 @@
+import ciudadesYProvincias.*
+
 class Certificacion {
 	var property puntos 
 	var property esSobreProductos = true
 }
-
 
 
 class Vendedor {
