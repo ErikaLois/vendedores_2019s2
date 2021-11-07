@@ -1,5 +1,7 @@
 import vendedores.*
 import ciudadesYProvincias.*
+import centroDeDistribucion.*
+import clientes.*
 
 describe "test de vendedores parte 1" {
 	
@@ -16,8 +18,9 @@ describe "test de vendedores parte 1" {
 	var tito = new Viajante(ciudadDondeVive = rosario, provinciasHabilitadas = [santaFe], certificaciones = [c1])
 	var pedro = new Viajante(ciudadDondeVive = quilmes, provinciasHabilitadas = [buenosAires, santaFe], certificaciones = [c1, c1, c2])
 	const comercio1 = new ComercioCorresponsal(ciudadDondeVive = villaCarlosPaz, sucursalesEn = [quilmes, villaCarlosPaz, rosario], certificaciones = [c1])
-	const comercio2 = new ComercioCorresponsal(ciudadDondeVive = rosario, sucursalesEn = [rosario, villaCarlosPaz], certificaciones = [c1])
+	const comercio2 = new ComercioCorresponsal(ciudadDondeVive = rosario, sucursalesEn = [rosario, villaCarlosPaz], certificaciones = [c1, c2, c1, c1])
 	const comercio3 = new ComercioCorresponsal(ciudadDondeVive = rosario, sucursalesEn = [rosario, quilmes, laPlata], certificaciones = [c1])
+	const cliente1 = new ClienteDetallista()
 		
 	
 	test "Juan puede trabajar en La PLata" {
@@ -67,4 +70,10 @@ describe "test de vendedores parte 1" {
 	test "comercio3 no es influyente"{
 		assert.notThat(comercio3.esInfluyente())
 	}
+	
+	test" cliente1 puede ser atendido por comercio2, pero no puede ser atendido por tito" {
+		assert.that(cliente1.puedeSerAtendidoPor(comercio2))
+		assert.notThat(cliente1.puedeSerAtendidoPor(tito))
+	}
+	
 }

@@ -1,4 +1,6 @@
 import ciudadesYProvincias.*
+import centroDeDistribucion.*
+
 
 class Certificacion {
 	var property puntos 
@@ -11,6 +13,7 @@ class Vendedor {
 	var property provinciasHabilitadas = []
 	var property certificaciones = []
 	var property sucursalesEn = []
+	var property personaFisica =true 
 	
 	//abstracto
 	method puedeTrabajarEn(ciudad)
@@ -27,6 +30,8 @@ class Vendedor {
 	method esGenerico() = certificaciones.any{c => !c.esSobreProductos()}
 	
 	method agregarCertificacion(cert) { certificaciones.add(cert) }
+	
+	method tieneAfinidad(centroDeDistribucion) = self.puedeTrabajarEn(centroDeDistribucion.ciudadDondeEsta())
 }
 
 class VendedorFijo inherits Vendedor {
@@ -49,4 +54,8 @@ class ComercioCorresponsal inherits Vendedor {
 	override method puedeTrabajarEn(ciudad) = sucursalesEn.contains(ciudad)
 	
 	override method esInfluyente() = sucursalesEn.size() >= 5 || sucursalesEn.map{c => c.provincia()}.asSet().size() >= 3
+	
+	override method tieneAfinidad(centroDeDistribucion) = super(centroDeDistribucion) && sucursalesEn.any{ c => !centroDeDistribucion.puedeCubrir(c) }
+
+	override method personaFisica() = false
 }

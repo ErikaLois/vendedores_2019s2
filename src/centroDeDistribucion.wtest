@@ -50,4 +50,9 @@ describe "test de vendedores parte 1" {
 		centroDis1.repartirCertificacion(c2)
 		assert.equals([c1, c1, c2], tito.certificaciones())
 	}
+	
+	test" El comercio1 tiene afinidad por el centroDis1, pero el comercio3 no" {
+		assert.that(comercio1.tieneAfinidad(centroDis1))
+		assert.notThat(comercio3.tieneAfinidad(centroDis1))
+	}
 }
