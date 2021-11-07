@@ -1,0 +1,53 @@
+import vendedores.*
+import ciudadesYProvincias.*
+import centroDeDistribucion.*
+
+describe "test de vendedores parte 1" {
+	
+	const c1 = new Certificacion(puntos = 15)
+	const c2 = new Certificacion(puntos = 8, esSobreProductos = false)
+	const buenosAires = new Provincia(poblacion = 5000000)
+	const cordoba = new Provincia(poblacion = 3000000) 
+	const santaFe = new Provincia(poblacion = 8000000)
+	const laPlata = new Ciudad(provincia = buenosAires)
+	const quilmes = new Ciudad(provincia = buenosAires)
+	const villaCarlosPaz = new Ciudad(provincia = cordoba)
+	const rosario = new Ciudad(provincia = santaFe)
+	var juan = new VendedorFijo(ciudadDondeVive = laPlata, certificaciones = [c2, c1, c1])
+	var jose = new VendedorFijo(ciudadDondeVive = villaCarlosPaz, certificaciones = [c1, c1, c1, c1, c1])
+	var tito = new Viajante(ciudadDondeVive = rosario, provinciasHabilitadas = [santaFe], certificaciones = [c1, c1])
+	var pedro = new Viajante(ciudadDondeVive = quilmes, provinciasHabilitadas = [buenosAires, santaFe], certificaciones = [c1, c1, c2])
+	const comercio1 = new ComercioCorresponsal(ciudadDondeVive = villaCarlosPaz, sucursalesEn = [quilmes, villaCarlosPaz, rosario], certificaciones = [c1])
+	const comercio2 = new ComercioCorresponsal(ciudadDondeVive = rosario, sucursalesEn = [rosario, villaCarlosPaz], certificaciones = [c1])
+	const comercio3 = new ComercioCorresponsal(ciudadDondeVive = rosario, sucursalesEn = [rosario, quilmes, laPlata], certificaciones = [c1])
+	const centroDis1 = new CentroDeDistribucion(ciudadDondeEsta = rosario, vendedores = [tito, pedro])
+	const centroDis2 = new CentroDeDistribucion(ciudadDondeEsta = rosario, vendedores = [tito, jose])
+	const centroDis3 = new CentroDeDistribucion(ciudadDondeEsta = rosario, vendedores = [tito, jose, juan, pedro])
+	
+	test" El vendedor estrella de centroDis1 es PEDRO" {
+		assert.equals(pedro, centroDis1.vendedorEstrella())
+	}
+	
+	test" El vendedor estrella de centroDis2 es JOSE" {
+		assert.equals(jose, centroDis2.vendedorEstrella())
+	}
+	
+	test" centroDis1 puede cubrir La Plata, pero no puede cubrir villa carlos paz" {
+		assert.that(centroDis1.puedeCubrir(laPlata))
+		assert.notThat(centroDis1.puedeCubrir(villaCarlosPaz))
+	}
+	
+	test "vendedores genericos de centroDis3" {
+		assert.equals([juan, pedro], centroDis3.vendedoresGenericos())
+	}
+	
+	test"centroDis1 no es robusto, pero cenrtoDis3 si lo es" {
+		assert.notThat(centroDis1.esRobusto())
+		assert.that(centroDis3.esRobusto())
+	}
+	
+	test "Agregar una certificacion c2 en centroDis1" {
+		centroDis1.repartirCertificacion(c2)
+		assert.equals([c1, c1, c2], tito.certificaciones())
+	}
+}

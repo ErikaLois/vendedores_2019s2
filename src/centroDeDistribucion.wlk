@@ -13,9 +13,13 @@ class CentroDeDistribucion {
 	
 	method vendedorEstrella() = vendedores.max{v => v.puntaje()}
 	
-	method puedeCubrir(ciudad) = vendedores.map{ v => v.provinciasHabilitadas()}.contains(ciudad.provincia())
+	method puedeCubrir(ciudad) = vendedores.any{v => v.puedeTrabajarEn(ciudad)}
 	
 	method vendedoresGenericos() = vendedores.filter{v => v.esGenerico()}
 	
 	method esRobusto() = vendedores.filter{v => v.esFirme()}.size() >= 3
+	
+	method repartirCertificacion(cert){
+		vendedores.forEach{v => v.agregarCertificacion(cert)}
+	}
 }

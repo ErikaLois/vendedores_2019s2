@@ -21,6 +21,12 @@ class Vendedor {
 	
 	//Método abstracto
 	method esInfluyente() 
+	
+	method puntaje() = certificaciones.sum{c => c.puntos()}
+	
+	method esGenerico() = certificaciones.any{c => !c.esSobreProductos()}
+	
+	method agregarCertificacion(cert) { certificaciones.add(cert) }
 }
 
 class VendedorFijo inherits Vendedor {
